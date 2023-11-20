@@ -5,7 +5,7 @@ Tools for streamlining the use of SIFT-MS data in WACL.
 To install, just write the following into your R console.
 
 ```
-devtools::install_github("jack-davison/siftr")
+devtools::install_github("wacl-york/siftr")
 ```
 
 # Reading Data
