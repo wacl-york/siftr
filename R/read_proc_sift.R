@@ -17,7 +17,7 @@ read_proc_sift <- function(file) {
   # Calculate start and end lines for each section
   start_ends <- lines %>%
     dplyr::filter(stringr::str_detect(line, ".xml")) %>%
-    dplyr::mutate(end = dplyr::lead(start)) %>%
+    dplyr::mutate(end = dplyr::lead(start)-2) %>%
     tidyr::replace_na(list(end = max(lines$start)))
 
   # Subfunction: Read in each bit of the data individually by mapping over our starts and ends
