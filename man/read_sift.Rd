@@ -4,15 +4,16 @@
 \alias{read_sift}
 \title{Read SIFT Data}
 \usage{
-read_sift(file, drop_prep = F, chatty = T)
+read_sift(file, drop_prep = F, chatty = T, warn = FALSE)
 }
 \arguments{
 \item{file}{The file path for the SIFT .csv file.}
 
 \item{drop_prep}{Is the PREPARATION sub-data missing? TRUE/FALSE.}
 
-\item{chatty}{\code{TRUE}/\code{FALSE}. Should the function communicate what
-it is doing? Useful for debugging.}
+\item{chatty}{\code{TRUE}/\code{FALSE}. Should the function communicate what it is doing? Useful for debugging.}
+
+\item{warn}{logical. if a section of the file cannot be read, should a warning or error be thrown? Default FALSE leads to an error being produced. For use with \code{read_many_sift()} to skip bad files}
 }
 \value{
 A list.
