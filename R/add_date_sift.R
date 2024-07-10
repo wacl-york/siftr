@@ -1,26 +1,16 @@
 #' Add Date SIFT Function
 #'
-#' This function processes a data frame to add a date column and optionally filter by phase.
+#' @description This function adds a date column to SIFT data, sets the timezone of date and start_time columns, and optionally filters by phase.
 #'
 #' @param data A data frame containing the SIFT data to be processed.
 #' @param units A character string specifying the units for time in the unstitched files. Can be "s" for seconds or "ms" for milliseconds. This argument is required.
 #' @param filter_phase A character string specifying the phase to filter by. Options are "SAMPLE", "BACKGROUND", "CALIBRATION", or `FALSE` to not filter. Defaults to 'FALSE'. Check the 'Phase' column in SIFT files to find correct option; for most users this will be "SAMPLE" for raw SIM or fullscan data and 'FALSE' for processed data.
 #' @param force_tz A character string containing the time zone to convert to, or `FALSE` to not adjust the time zone. R must recognize the name contained in the string as a time zone on your system. Defaults to "Europe/London".
 #'
-#' @return A data frame with an added `date` column, time zone set, and optionally filtered by phase.
+#' @return A data frame with an added `date` column, time zone set for date and start time columns, and optionally filtered by phase.
 #'
 #' @import dplyr
 #' @import lubridate
-#'
-#' @examples
-#' # Example usage:
-#' data <- data.frame(
-#'   start_time = as.POSIXct(c('2021-01-01 00:00:00', '2021-01-01 00:01:00')),
-#'   time_ms = c(0, 10000),
-#'   time_s = c(0, 10),
-#'   phase = c('SAMPLE', 'SAMPLE')
-#' )
-#' add_date_sift(data, units = "ms", filter_phase = FALSE, tzone = "Europe/London")
 #'
 #' @export
 #'
