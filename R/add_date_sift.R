@@ -23,6 +23,7 @@
 #' add_date_sift(data, units = "ms", filter_phase = FALSE, tzone = "Europe/London")
 #'
 #' @export
+#'
 add_date_sift <- function(data, units, filter_phase = FALSE, force_tz = "Europe/London") {
   # Validate the units argument
   if (!units %in% c("s", "ms")) {
