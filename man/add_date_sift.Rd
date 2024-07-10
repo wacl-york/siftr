@@ -4,16 +4,16 @@
 \alias{add_date_sift}
 \title{Add Date SIFT Function}
 \usage{
-add_date_sift(data, units, filter_phase = FALSE, force_tz = "Europe/London")
+add_date_sift(data, time_units, filter_phase = FALSE, force_tz = FALSE)
 }
 \arguments{
-\item{data}{A data frame containing the SIFT data to be processed.}
+\item{data}{A data frame (from other read_sift functions) containing the SIFT data to be processed.}
 
-\item{units}{A character string specifying the units for time in the unstitched files. Can be "s" for seconds or "ms" for milliseconds. This argument is required.}
+\item{time_units}{A character string specifying the units for time in the unstitched files. Can be "s" for seconds or "ms" for milliseconds. This argument is required.}
 
-\item{filter_phase}{A character string specifying the phase to filter by. Options are "SAMPLE", "BACKGROUND", "CALIBRATION", or \code{FALSE} to not filter. Defaults to 'FALSE'. Check the 'Phase' column in SIFT files to find correct option; for most users this will be "SAMPLE" for raw SIM or fullscan data and 'FALSE' for processed data.}
+\item{filter_phase}{A character string specifying the phase to filter by. Options are "SAMPLE", "BACKGROUND", "CALIBRATION", or \code{FALSE} to not filter. Defaults to 'FALSE'. Check the 'Phase' column in SIFT files to find correct option; for many users this will be "SAMPLE", "BACKGROUND" or "CALIBRATION" for raw SIM or fullscan data and 'FALSE' for processed data.}
 
-\item{force_tz}{A character string containing the time zone to convert to, or \code{FALSE} to not adjust the time zone. R must recognize the name contained in the string as a time zone on your system. Defaults to "Europe/London".}
+\item{force_tz}{A character string containing the time zone to convert to, or \code{FALSE} to not adjust the time zone. R must recognize the name contained in the string as a time zone on your system. Defaults to 'FALSE'. For use in WACL use "Europe/London".}
 }
 \value{
 A data frame with an added \code{date} column, time zone set for date and start time columns, and optionally filtered by phase.
