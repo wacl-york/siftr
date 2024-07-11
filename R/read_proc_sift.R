@@ -45,6 +45,7 @@ read_proc_sift <- function(file) {
       dplyr::mutate(name = stringr::str_replace_all(name, "\\(R\\)", "R")) %>%
       dplyr::mutate(name = stringr::str_replace_all(name, "\\(S\\)", "S")) %>%
       janitor::clean_names() %>%
+      dplyr::mutate(time_s = as.numeric(time_s)) |>
       tidyr::drop_na()
 
     return(df)
@@ -53,17 +54,26 @@ read_proc_sift <- function(file) {
   # Map using the above function - returns a list.
   raw <- purrr::map2(.x = start_ends$start, .y = start_ends$end, .f = ~ read_data(start = .x, end = .y))
 
-  analyte_conc <- raw[[1]] %>%
+  all_indices <- seq(length(raw))
+  index_remainders <- all_indices %% 3
+  analyte_indices <- all_indices[index_remainders == 1]
+  reagent_indices <- all_indices[index_remainders == 2]
+  product_indices <- all_indices[index_remainders == 0]
+
+  analyte_conc <- raw[analyte_indices] %>%
+    dplyr::bind_rows() |>
     tidyr::separate(name, into = c("name", "numbers", "unit"), sep = " \\(") %>%
     dplyr::mutate(dplyr::across(where(is.character), stringr::str_remove, "\\)"),
       unit = stringr::str_replace_all(unit, "\U00B3", "3")
     )
 
-  conc_per_reagent <- raw[[2]] %>%
+  conc_per_reagent <- raw[reagent_indices] %>%
+    dplyr::bind_rows() |>
     tidyr::separate(name, into = c("reagent_ion", "compound", "numbers", "unit"), sep = " \\(| / ") %>%
     dplyr::mutate(dplyr::across(where(is.character), stringr::str_remove, "\\)"))
 
-  conc_per_product <- raw[[3]] %>%
+  conc_per_product <- raw[product_indices] %>%
+    dplyr::bind_rows() |>
     tidyr::separate(name,
       into = c("product_ion", "product_ion_mass", "reagent_ion", "compound", "numbers", "unit"),
       sep = " \\[|  / | / | \\("
