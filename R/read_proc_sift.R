@@ -62,7 +62,7 @@ read_proc_sift <- function(file) {
 
   analyte_conc <- raw[analyte_indices] %>%
     dplyr::bind_rows() |>
-    tidyr::separate(name, into = c("name", "CAS_number", "unit"), sep = " \\(") %>%
+    tidyr::separate(name, into = c("compound", "CAS_number", "unit"), sep = " \\(") %>%
     dplyr::mutate(dplyr::across(where(is.character), stringr::str_remove, "\\)"),
       unit = stringr::str_replace_all(unit, "\U00B3", "3")
     )
