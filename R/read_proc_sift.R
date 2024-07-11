@@ -62,20 +62,20 @@ read_proc_sift <- function(file) {
 
   analyte_conc <- raw[analyte_indices] %>%
     dplyr::bind_rows() |>
-    tidyr::separate(name, into = c("name", "numbers", "unit"), sep = " \\(") %>%
+    tidyr::separate(name, into = c("name", "CAS_number", "unit"), sep = " \\(") %>%
     dplyr::mutate(dplyr::across(where(is.character), stringr::str_remove, "\\)"),
       unit = stringr::str_replace_all(unit, "\U00B3", "3")
     )
 
   conc_per_reagent <- raw[reagent_indices] %>%
     dplyr::bind_rows() |>
-    tidyr::separate(name, into = c("reagent_ion", "compound", "numbers", "unit"), sep = " \\(| / ") %>%
+    tidyr::separate(name, into = c("reagent_ion", "compound", "CAS_number", "unit"), sep = " \\(| / ") %>%
     dplyr::mutate(dplyr::across(where(is.character), stringr::str_remove, "\\)"))
 
   conc_per_product <- raw[product_indices] %>%
     dplyr::bind_rows() |>
     tidyr::separate(name,
-      into = c("product_ion", "product_ion_mass", "reagent_ion", "compound", "numbers", "unit"),
+      into = c("product_ion", "product_ion_mass", "reagent_ion", "compound", "CAS_number", "unit"),
       sep = " \\[|  / | / | \\("
     ) %>%
     dplyr::mutate(dplyr::across(where(is.character), stringr::str_remove, "\\)|\\]"))
