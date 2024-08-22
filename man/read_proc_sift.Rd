@@ -4,16 +4,19 @@
 \alias{read_proc_sift}
 \title{Read Processed SIFT Data}
 \usage{
-read_proc_sift(file)
+read_proc_sift(file_path)
 }
 \arguments{
-\item{file}{The file path for the pre-processed SIFT .csv file.}
+\item{file_path}{A character string specifying the path to the Processed SIFT .csv file.}
 }
 \value{
-A list.
+A data frame with columns: table, time_s, compound_identity, conc.
 }
 \description{
 This is a function to read data that has already been processed
-by the SYFT into three tables - analyte concentrations, concentrations per
-reagent and concentrations per product.
+by LabSyft (into up to six different tables - Analyte concentrations,
+Analyte concentrations per reagent ion, Analyte concentrations per product
+ion, and their raw equivalents) into a single data frame. Each .csv file
+can contain multiple times. Use lapply() and bind_rows() to read multiple
+sheets at once.
 }
