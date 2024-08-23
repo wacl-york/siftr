@@ -1,4 +1,4 @@
-#' filter_proc_sift: Filter and Process Processed SIFT-MS Data Tables
+#' Filter Processed SIFT-MS Data
 #'
 #' @description
 #' This function is designed to filter processed SIFT-MS data outputted from the
