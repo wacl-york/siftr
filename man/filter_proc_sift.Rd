@@ -2,7 +2,7 @@
 % Please edit documentation in R/filter_proc_sift.R
 \name{filter_proc_sift}
 \alias{filter_proc_sift}
-\title{filter_proc_sift: Filter and Process Processed SIFT-MS Data Tables}
+\title{Filter Processed SIFT-MS Data}
 \usage{
 filter_proc_sift(df, table_type, remove_incomplete_scans = TRUE, conc_unit)
 }
@@ -12,13 +12,9 @@ Processed SIFT-MS data, which includes columns \code{table}, \code{time_s},
 \code{compound_identity}, and \code{conc}.}
 
 \item{table_type}{A character string indicating the type of concentration data
-to filter. Acceptable values include:
-- "analyte_conc": Analyte concentrations
-- "conc_per_reagent": Analyte concentration per reagent ion
-- "conc_per_product": Analyte concentration per product ion
-- "raw_analyte_conc": Raw analyte concentrations
-- "raw_conc_per_reagent": Raw analyte concentration per reagent ion
-- "raw_conc_per_product": Raw analyte concentration per product ion}
+to filter. Acceptable values include: "analyte_conc", "conc_per_reagent",
+"conc_per_product", "raw_analyte_conc", "raw_conc_per_reagent", and
+"raw_conc_per_product"}
 
 \item{remove_incomplete_scans}{A logical value. If TRUE (default), scans
 which are incomplete will be removed. Incomplete scans can result when
