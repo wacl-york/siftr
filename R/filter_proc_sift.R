@@ -11,13 +11,9 @@
 #'           `compound_identity`, and `conc`.
 #'
 #' @param table_type A character string indicating the type of concentration data
-#'        to filter. Acceptable values include:
-#'        - "analyte_conc": Analyte concentrations
-#'        - "conc_per_reagent": Analyte concentration per reagent ion
-#'        - "conc_per_product": Analyte concentration per product ion
-#'        - "raw_analyte_conc": Raw analyte concentrations
-#'        - "raw_conc_per_reagent": Raw analyte concentration per reagent ion
-#'        - "raw_conc_per_product": Raw analyte concentration per product ion
+#'        to filter. Acceptable values include: "analyte_conc", "conc_per_reagent",
+#'        "conc_per_product", "raw_analyte_conc", "raw_conc_per_reagent", and
+#'        "raw_conc_per_product"
 #' @param remove_incomplete_scans A logical value. If TRUE (default), scans
 #'        which are incomplete will be removed. Incomplete scans can result when
 #'        a scan is ended.
