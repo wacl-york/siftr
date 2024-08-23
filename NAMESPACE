@@ -2,6 +2,7 @@
 
 export("%>%")
 export(add_date_sift)
+export(filter_proc_sift)
 export(read_fullscan_sift)
 export(read_many_proc_sift)
 export(read_many_sift)
