@@ -25,6 +25,11 @@
 
 filter_proc_sift <- function(df, table_type, remove_incomplete_scans = TRUE, conc_unit) {
 
+  if (any(duplicated(df))) {
+    warning("Duplicate rows found and removed.")
+    df <- df[!duplicated(df), ]
+  }
+
   valid_units <- c("ppm", "ppb", "ppt")
   if (!conc_unit %in% valid_units) {
     stop("Invalid conc_unit provided. Choose from 'ppm', 'ppb', or 'ppt'.")
