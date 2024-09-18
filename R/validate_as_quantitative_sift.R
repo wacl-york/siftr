@@ -66,7 +66,7 @@ validate_as_quantitative_sift <- function(data) {
     warning_msg1 <- "Some rows have NA values for sum_product_ions. Here are the details:\n"
     warning_msg1 <- paste0(warning_msg1,
                           paste0(apply(na_summary, 1, function(row) {
-                            paste("Date:", row["date"], "Ions:", row["ions"])
+                            paste("Date:", row["date"], "Reagent ions:", row["reagent_ion_mass"])
                           }), collapse = "\n"))
 
     warning(warning_msg1)
@@ -88,7 +88,7 @@ validate_as_quantitative_sift <- function(data) {
     warning_msg2 <- "Some rows have non-quantitative results. Here are the details:\n"
     warning_msg2 <- paste0(warning_msg2,
                           paste0(apply(non_quantitative_summary, 1, function(row) {
-                            paste("Date:", row["date"], "Ions:", row["ions"])
+                            paste("Date:", row["date"], "Reagent ions:", row["reagent_ion_mass"])
                           }), collapse = "\n"))
 
     warning(warning_msg2)
@@ -100,7 +100,7 @@ validate_as_quantitative_sift <- function(data) {
   result <- list(
     validated_data = data,
     sum_product_ions_warning_data = na_summary,
-    non_quantitative_summary_data = non_quantitative_summary
+    non_quantitative_warning_data = non_quantitative_summary
   )
 
   return(result)
