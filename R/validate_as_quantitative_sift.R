@@ -55,13 +55,13 @@ validate_as_quantitative_sift <- function(data) {
 
   na_rows <- data %>%
     filter(is.na(sum_product_ions)) %>%
-    select(date, ion) %>%
+    select(date, reagent_ion_mass) %>%
     distinct()
 
   na_summary <- if (nrow(na_rows) > 0) {
     na_summary <- na_rows %>%
       group_by(date) %>%
-      summarise(ions = paste(unique(ion), collapse = ", "), .groups = 'drop')
+      summarise(reagent_ion_masses = paste(unique(reagent_ion_mass), collapse = ", "), .groups = 'drop')
 
     warning_msg1 <- "Some rows have NA values for sum_product_ions. Here are the details:\n"
     warning_msg1 <- paste0(warning_msg1,
@@ -77,13 +77,13 @@ validate_as_quantitative_sift <- function(data) {
 
   non_quantitative_rows <- data %>%
     filter(!quantitative) %>%
-    select(date, ion) %>%
+    select(date, reagent_ion_mass) %>%
     distinct()
 
   non_quantitative_summary <- if (nrow(non_quantitative_rows) > 0) {
     non_quantitative_summary <- non_quantitative_rows %>%
       group_by(date) %>%
-      summarise(ions = paste(unique(ion), collapse = ", "), .groups = 'drop')
+      summarise(reagent_ion_masses = paste(unique(reagent_ion_mass), collapse = ", "), .groups = 'drop')
 
     warning_msg2 <- "Some rows have non-quantitative results. Here are the details:\n"
     warning_msg2 <- paste0(warning_msg2,
