@@ -10,41 +10,38 @@
 #'  `ion`, `date`, and `value`.
 #'
 #' @return A list of tibbles. `validated_data` is a data frame with additional
-#' columns (`product_ion`, `reagent_ion`, `total_ion _count`, `reagent_ion_count`,
-#'  `sum_product_ions`, `ratio_reagent_to_product` and `quantitative`) containing
-#'   validation information, and there are two other data frames to aid with
-#'   potential warning messages.
+#' columns (`product_ion_mass`, `reagent_ion_mass`, `total_ion_count`,
+#' `reagent_ion_count`, `sum_product_ions`, `ratio_reagent_to_product` and
+#' `quantitative`) containing validation information, and there are two other
+#' data frames to aid with potential warning messages.
 #'
 #' @export
 #'
 
 validate_as_quantitative_sift <- function(data) {
 
-  # Separate the 'ion' column into 'product_ion' and 'reagent_ion'
   data <- data %>%
-    separate(ion, into = c("product_ion", "reagent_ion"), sep = " \\(", remove = FALSE) %>%
+    separate(ion, into = c("product_ion_mass", "reagent_ion_mass"), sep = " \\(", remove = FALSE) %>%
     mutate(
-      product_ion = as.numeric(gsub("\\+", "", product_ion)),
-      reagent_ion = as.numeric(gsub("\\+\\)", "", reagent_ion))
+      product_ion_mass = as.numeric(gsub("\\+", "", product_ion_mass)),
+      reagent_ion_mass = as.numeric(gsub("\\+\\)", "", reagent_ion_mass))
     )
 
-  # Validate reagent_ion values
   valid_reagents <- c(19, 30, 32)
-  if (any(!data$reagent_ion %in% valid_reagents)) {
-    stop("Invalid reagent_ion values detected. Check values are only 19, 30 or 32")
+  if (any(!data$reagent_ion_mass %in% valid_reagents)) {
+    stop("Invalid reagent_ion_mass values detected. Check values are only 19, 30 or 32")
   }
 
-  # Process the data
   data <- data %>%
-    group_by(date, reagent_ion) %>%
+    group_by(date, reagent_ion_mass) %>%
     mutate(total_ion_count = sum(value, na.rm = TRUE)) %>%
     ungroup() %>%
     group_by(date) %>%
     mutate(
       reagent_ion_count = case_when(
-        reagent_ion == 19 ~ sum(value[ion %in% c("19+ (19+)", "37+ (19+)")], na.rm = TRUE),
-        reagent_ion == 30 ~ sum(value[ion == "30+ (30+)"], na.rm = TRUE),
-        reagent_ion == 32 ~ sum(value[ion == "32+ (32+)"], na.rm = TRUE),
+        reagent_ion_mass == 19 ~ sum(value[ion %in% c("19+ (19+)", "37+ (19+)")], na.rm = TRUE),
+        reagent_ion_mass == 30 ~ sum(value[ion == "30+ (30+)"], na.rm = TRUE),
+        reagent_ion_mass == 32 ~ sum(value[ion == "32+ (32+)"], na.rm = TRUE),
         TRUE ~ NA_real_
       ),
       sum_product_ions = total_ion_count - reagent_ion_count,

@@ -12,10 +12,10 @@ validate_as_quantitative_sift(data)
 }
 \value{
 A list of tibbles. \code{validated_data} is a data frame with additional
-columns (\code{product_ion}, \code{reagent_ion}, \verb{total_ion _count}, \code{reagent_ion_count},
-\code{sum_product_ions}, \code{ratio_reagent_to_product} and \code{quantitative}) containing
-validation information, and there are two other data frames to aid with
-potential warning messages.
+columns (\code{product_ion_mass}, \code{reagent_ion_mass}, \code{total_ion_count},
+\code{reagent_ion_count}, \code{sum_product_ions}, \code{ratio_reagent_to_product} and
+\code{quantitative}) containing validation information, and there are two other
+data frames to aid with potential warning messages.
 }
 \description{
 This function validates that fullscan SIFT-MS data is quantitative through
