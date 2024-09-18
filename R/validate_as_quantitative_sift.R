@@ -10,7 +10,7 @@
 #'  `ion`, `date`, and `value`.
 #'
 #' @return A list of tibbles. `validated_data` is a data frame with additional
-#' columns (`product_ion_mass`, `reagent_ion_mass`, `total_ion _count`,
+#' columns (`product_ion_mass`, `reagent_ion_mass`, `total_ion_count`,
 #' `reagent_ion_count`, `sum_product_ions`, `ratio_reagent_to_product` and
 #' `quantitative`) containing validation information, and there are two other
 #' data frames to aid with potential warning messages.
