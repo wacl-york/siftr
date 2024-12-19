@@ -21,5 +21,6 @@ Imports:
     readr,
     stringr,
     tibble,
-    tidyr
+    tidyr,
+    xml2
 RoxygenNote: 7.3.0
