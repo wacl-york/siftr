@@ -4,20 +4,34 @@
 \alias{add_date_sift}
 \title{Add Date SIFT Function}
 \usage{
-add_date_sift(data, time_units, filter_phase = FALSE, force_tz = FALSE)
+add_date_sift(
+  data,
+  time_units,
+  time_input,
+  start_time_input = "start_time",
+  force_tz = FALSE,
+  output = "date",
+  round_date = TRUE
+)
 }
 \arguments{
 \item{data}{A data frame (from other read_sift functions) containing the SIFT data to be processed.}
 
 \item{time_units}{A character string specifying the units for time in the unstitched files. Can be "s" for seconds or "ms" for milliseconds. This argument is required.}
 
-\item{filter_phase}{A character string specifying the phase to filter by. Options are "SAMPLE", "BACKGROUND", "CALIBRATION", or \code{FALSE} to not filter. Defaults to 'FALSE'. Check the 'Phase' column in SIFT files to find correct option; for many users this will be "SAMPLE", "BACKGROUND" or "CALIBRATION" for raw SIM or fullscan data and 'FALSE' for processed data.}
+\item{time_input}{A character string specifying the column name for the time input (e.g., "time_s" or "time_ms").}
 
-\item{force_tz}{A character string containing the time zone to convert to, or \code{FALSE} to not adjust the time zone. R must recognize the name contained in the string as a time zone on your system. Defaults to 'FALSE'. For use in WACL use "Europe/London".}
+\item{start_time_input}{A character string specifying the column name for the start time input. Defaults to "start_time".}
+
+\item{force_tz}{A character string containing the time zone to convert to, or \code{FALSE} to not adjust the time zone. Defaults to \code{FALSE}. For use in WACL, use "Europe/London".}
+
+\item{output}{A character string specifying the name of the output column for the calculated date. Defaults to "date".}
+
+\item{round_date}{A logical value indicating whether to round the output to the nearest second. Defaults to TRUE.}
 }
 \value{
-A data frame with an added \code{date} column, time zone set for date and start time columns, and optionally filtered by phase.
+A data frame with an added output column (default: \code{date}), and time zone set for the specified columns.
 }
 \description{
-This function adds a date column to SIFT data, sets the timezone of date and start_time columns, and optionally filters by phase.
+This function adds a date column (dttm) to SIFT data from the scan start time (dttm) and time (numeric) columns, and can set the timezone of date and start time columns.
 }

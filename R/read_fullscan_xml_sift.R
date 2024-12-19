@@ -35,12 +35,12 @@ read_fullscan_xml_sift <- function(xml_file_path, tzone = 'Europe/London') {
     dplyr::pull(value) %>%
     as.numeric()
 
-  start_time <- strftime(
-    as.POSIXct(job_start_time / 1000, origin = "1970-01-01", tz = tzone) +
-      (job_start_time %% 1000) / 1000,
-    format = "%Y-%m-%d %H:%M:%OS3",
+  start_time <- as.POSIXct(
+    job_start_time / 1000,
+    origin = "1970-01-01",
     tz = tzone
-  )
+  ) + (job_start_time %% 1000) / 1000
+
 
   job_name <- settings_df %>%
     dplyr::filter(name == "job.name") %>%

@@ -15,8 +15,8 @@ read_fullscan_xml_sift(xml_file_path, tzone = "Europe/London")
 A named list containing the following elements:
 \item{settings}{Data frame of settings extracted from the XML file.}
 \item{method}{Data frame of method values extracted from the XML file.}
-\item{scan_masses}{Data frame of masses scanned}
-\item{measurements}{Data frame containing fullscan data}
+\item{scan_masses}{Data frame of masses scanned.}
+\item{measurements}{Data frame containing fullscan data.}
 }
 \description{
 Parses a full-scan SIFT XML file and extracts information including settings, methods,
