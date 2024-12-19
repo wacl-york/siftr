@@ -13,26 +13,16 @@ read_many_fullscan_xml_sift(xml_file_paths, tzone = "Europe/London")
 Default is "Europe/London".}
 }
 \value{
-A list of four dataframes:
+A list containing:
 \describe{
-\item{settings}{Combined settings data from all XML files.}
-\item{method}{Combined method data from all XML files.}
-\item{scan_masses}{Combined scan masses from all XML files.}
-\item{measurements}{Combined fullscan data from all XML files.}
+\item{settings}{Combined settings data from all successfully processed XML files.}
+\item{method}{Combined method data from all successfully processed XML files.}
+\item{scan_masses}{Combined scan mass data from all successfully processed XML files.}
+\item{measurements}{Combined measurements data from all successfully processed XML files.}
+\item{errors}{A dataframe listing files that failed to process and their error messages.}
 }
 }
 \description{
 This function reads multiple XML files using \code{read_fullscan_xml_sift} and combines the resulting dataframes
-from each file into four consolidated tables: \code{settings}, \code{method}, \code{scan_masses}, and \code{measurements}.
-}
-\examples{
-xml_file_paths <- list.files(path = "path", pattern = "\\\\.xml$", full.names = TRUE)
-result <- read_many_fullscan_xml_sift(xml_file_paths, tzone = "Europe/London")
-
-# Accessing individual combined tables
-settings_df <- result$settings
-method_df <- result$method
-scan_masses_df <- result$scan_masses
-measurements_df <- result$measurements
-
+from each file into five tables: \code{settings}, \code{method}, \code{scan_masses}, \code{measurements} and \code{errors}
 }

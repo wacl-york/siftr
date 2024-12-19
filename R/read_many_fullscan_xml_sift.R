@@ -16,10 +16,6 @@
 #'   \item{errors}{A dataframe listing files that failed to process and their error messages.}
 #' }
 #'
-#' @examples
-#' xml_file_paths <- list.files(path = "path_to_your_xml_files", pattern = "\\.xml$", full.names = TRUE)
-#' result <- read_many_fullscan_xml_sift(xml_file_paths, tzone = "Europe/London")
-#'
 #' @export
 read_many_fullscan_xml_sift <- function(xml_file_paths, tzone = "Europe/London") {
   message("Reading multiple XML files...")

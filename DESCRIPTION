@@ -12,15 +12,17 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-Imports: 
+Imports:
     dplyr,
     janitor,
     lubridate,
     magrittr,
     purrr,
     readr,
+    rlang,
     stringr,
     tibble,
     tidyr,
+    utils,
     xml2
 RoxygenNote: 7.3.0
