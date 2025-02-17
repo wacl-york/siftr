@@ -25,14 +25,16 @@
 
 filter_proc_sift <- function(df, table_type, remove_incomplete_scans = TRUE, conc_unit) {
 
-  if (any(duplicated(df))) {
-    warning("Duplicate rows found and removed.")
-    df <- df[!duplicated(df), ]
-  }
-
   valid_units <- c("ppm", "ppb", "ppt")
   if (!conc_unit %in% valid_units) {
     stop("Invalid conc_unit provided. Choose from 'ppm', 'ppb', or 'ppt'.")
+  }
+
+  if (remove_incomplete_scans) {
+    df <- df %>%
+      group_by(time_s, table) %>%
+      filter(!any(is.na(conc))) %>%
+      ungroup()
   }
 
   df <- df |>
@@ -43,13 +45,6 @@ filter_proc_sift <- function(df, table_type, remove_incomplete_scans = TRUE, con
            table_type = str_trim(table_type),
            start_time = str_extract(table, "\\d{8}-\\d{6}") %>%
              ymd_hms(tz = "UTC", truncated = 3))
-
-  if (remove_incomplete_scans) {
-    df <- df %>%
-      group_by(time_s, table) %>%
-      filter(!any(is.na(conc))) %>%
-      ungroup()
-  }
 
   lookup <- list(
     analyte_conc = "Analyte concentrations",
