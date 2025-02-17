@@ -101,15 +101,7 @@ read_fullscan_xml_sift <- function(xml_file_path, tzone = 'Europe/London') {
     dilution_factor_sift = xml2::xml_attr(measurements_xml, "df") %>% as.numeric(),
     raw_count = xml2::xml_text(measurements_xml) %>% as.numeric()
   ) %>%
-    dplyr::arrange(.data$ion_time_ms) %>%
-    dplyr::mutate(
-      reagent_mass = dplyr::case_when(
-        .data$reagent_ion == "H3O+" ~ 19,
-        .data$reagent_ion == "NO+" ~ 30,
-        .data$reagent_ion == "O2+" ~ 32,
-        TRUE ~ NA_real_
-      )
-    )
+    dplyr::arrange(.data$ion_time_ms)
 
   first_reagent_ion <- measurements_df %>% dplyr::arrange(.data$ion_time_ms) %>% dplyr::pull(.data$reagent_ion) %>% dplyr::first()
   first_product_mass <- measurements_df %>% dplyr::arrange(.data$ion_time_ms) %>% dplyr::pull(.data$product_mass) %>% dplyr::first()
@@ -129,7 +121,7 @@ read_fullscan_xml_sift <- function(xml_file_path, tzone = 'Europe/London') {
         scan_intervals[idx]
       })
     ) %>%
-    dplyr::select(c(start_time, job_name, job_id, .data$time_ms, .data$ion_time_ms, .data$reagent_ion, .data$reagent_mass, dplyr::everything()))
+    dplyr::select(c(start_time, job_name, job_id, .data$time_ms, .data$ion_time_ms, everything()))
 
   method_df <- method_df %>%
     tidyr::pivot_wider(names_from = .data$field, values_from = .data$value)
