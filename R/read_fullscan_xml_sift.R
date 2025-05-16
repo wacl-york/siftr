@@ -48,8 +48,7 @@ read_fullscan_xml_sift <- function(xml_file_path, tzone = 'Europe/London') {
 
   job_id <- settings_df %>%
     dplyr::filter(name == "job.id") %>%
-    dplyr::pull(value) %>%
-    as.numeric()
+    dplyr::pull(value)
 
   # Include start_time, job_name, and job_id in settings_df
   settings_df <- settings_df %>%
