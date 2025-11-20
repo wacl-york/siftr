@@ -15,7 +15,8 @@
 
 read_proc_sift <- function(file_path) {
   # Read the entire CSV file
-  raw_data <- readLines(file_path)
+  raw_data <- readLines(file_path, encoding = "latin1")
+  raw_data <- iconv(raw_data, from = "latin1", to = "UTF-8")
 
   # Initialize an empty data frame to store the final result
   result_df <- data.frame(
