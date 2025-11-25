@@ -11,20 +11,26 @@ filter_proc_sift(df, table_type, remove_incomplete_scans = TRUE, conc_unit)
 Processed SIFT-MS data, which includes columns \code{table}, \code{time_s},
 \code{compound_identity}, and \code{conc}.}
 
-\item{table_type}{A character string indicating the type of concentration data
-to filter. Acceptable values include: "analyte_conc", "conc_per_reagent",
-"conc_per_product", "raw_analyte_conc", "raw_conc_per_reagent", and
-"raw_conc_per_product"}
+\item{table_type}{A character string indicating the type of table to filter.
+Acceptable values include: \code{"analyte_conc"}, \code{"conc_per_reagent"},
+\code{"conc_per_product"}, \code{"raw_analyte_conc"}, \code{"raw_conc_per_reagent"}, and
+\code{"raw_conc_per_product"}. Raw tables do not have the ICF correction applied.}
 
 \item{remove_incomplete_scans}{A logical value. If TRUE (default), scans
 which are incomplete will be removed. Incomplete scans can result when
 a scan is ended.}
 
 \item{conc_unit}{A character string specifying the desired concentration unit for
-conversion. Acceptable values are "ppm", "ppb", or "ppt".}
+conversion. Acceptable volumetric units are \code{"ppm"}, \code{"ppb"}, and \code{"ppt"}; and
+mass based units \code{"mg/m³"}, \code{"µg/m³"}, and \code{"ng/m³"}. The function does not convert
+between mass and volumetric - ensure the correct type when exporting from LabSyft.}
 }
 \value{
-A data frame
+A list with two elements:
+\describe{
+\item{data}{A data frame with processed and converted concentration values in the requested unit.}
+\item{removed_conflicts}{A data frame of rows removed due to volumetric/mass unit conflicts.}
+}
 }
 \description{
 This function is designed to filter processed SIFT-MS data outputted from the

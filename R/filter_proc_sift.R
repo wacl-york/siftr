@@ -43,21 +43,21 @@ filter_proc_sift <- function(df, table_type, remove_incomplete_scans = TRUE, con
 
   if (remove_incomplete_scans) {
     df <- df |>
-      dplyr::group_by(time_s, table) |>
-      dplyr::filter(!any(is.na(conc))) |>
+      dplyr::group_by(.data$time_s, .data$table) |>
+      dplyr::filter(!any(is.na(.data$conc))) |>
       dplyr::ungroup()
   }
 
   df <- df |>
     tidyr::separate(
-      col = table,
+      col = "table",
       into = c("table", "data_type", "table_type"),
       sep = ":"
     ) |>
     dplyr::mutate(
-      data_type = stringr::str_trim(data_type),
-      table_type = stringr::str_trim(table_type),
-      start_time = stringr::str_extract(table, "\\d{8}-\\d{6}") |>
+      data_type = stringr::str_trim(.data$data_type),
+      table_type = stringr::str_trim(.data$table_type),
+      start_time = stringr::str_extract(.data$table, "\\d{8}-\\d{6}") |>
         lubridate::ymd_hms(tz = "UTC", truncated = 3)
     )
 
@@ -79,111 +79,110 @@ filter_proc_sift <- function(df, table_type, remove_incomplete_scans = TRUE, con
     filtered_df <- filtered_df |>
       dplyr::mutate(
         unit = stringr::str_extract(
-          compound_identity,
+          .data$compound_identity,
           "(?<=\\()(ppb|ppm|ppt|mg/m³|µg/m³|ng/m³)(?=\\))"
         ),
         cas_number = stringr::str_extract(
-          compound_identity,
+          .data$compound_identity,
           "(?<=\\()\\d{1,7}-\\d{2}-\\d{1,2}(?=\\))"
         ),
-        compound = stringr::str_remove(compound_identity, "\\s*\\([^()]*\\)\\s*$") |>
+        compound = stringr::str_remove(.data$compound_identity, "\\s*\\([^()]*\\)\\s*$") |>
           stringr::str_remove_all("\\s*\\([^()]*\\)\\s*$") |>
           stringr::str_trim()
       ) |>
-      dplyr::select(start_time, table, table_type, time_s, compound_identity,
-                    compound, cas_number, conc, unit)
+      dplyr::select(.data$start_time, .data$table, .data$table_type, .data$time_s, .data$compound_identity,
+                    .data$compound, .data$cas_number, .data$conc, .data$unit)
   }
 
   if (table_type %in% c("conc_per_reagent", "raw_conc_per_reagent")) {
 
     filtered_df <- filtered_df |>
       tidyr::separate(
-        compound_identity,
+        .data$compound_identity,
         into = c("reagent_ion", "compound_identity_2"),
         sep = " / "
       ) |>
       dplyr::mutate(
-        reagent_ion = stringr::str_trim(reagent_ion, side = "right"),
-        compound_identity_2 = stringr::str_trim(compound_identity_2, side = "left"),
-        compound_identity = filtered_df$compound_identity
+        reagent_ion = stringr::str_trim(.data$reagent_ion, side = "right"),
+        compound_identity_2 = stringr::str_trim(.data$compound_identity_2, side = "left"),
+        compound_identity = .data$compound_identity
       ) |>
       dplyr::mutate(
         unit = stringr::str_extract(
-          compound_identity_2,
+          .data$compound_identity_2,
           "(?<=\\()(ppb|ppm|ppt|mg/m³|µg/m³|ng/m³)(?=\\))"
         ),
         cas_number = stringr::str_extract(
-          compound_identity_2,
+          .data$compound_identity_2,
           "(?<=\\()\\d{1,7}-\\d{2}-\\d{1,2}(?=\\))"
         ),
-        compound = stringr::str_remove(compound_identity_2, "\\s*\\([^()]*\\)\\s*$") |>
+        compound = stringr::str_remove(.data$compound_identity_2, "\\s*\\([^()]*\\)\\s*$") |>
           stringr::str_remove_all("\\s*\\([^()]*\\)\\s*$") |>
           stringr::str_trim()
       ) |>
-      dplyr::select(start_time, table, table_type, time_s, compound_identity,
-                    reagent_ion, compound, cas_number, conc, unit)
+      dplyr::select(.data$start_time, .data$table, .data$table_type, .data$time_s, .data$compound_identity,
+                    .data$reagent_ion, .data$compound, .data$cas_number, .data$conc, .data$unit)
   }
 
   if (table_type %in% c("conc_per_product", "raw_conc_per_product")) {
 
     filtered_df <- filtered_df |>
       tidyr::separate(
-        compound_identity,
+        .data$compound_identity,
         into = c("product_ion_2", "reagent_ion", "compound_identity_2"),
         sep = " / "
       ) |>
-      dplyr::mutate(compound_identity = filtered_df$compound_identity) |>
-      tidyr::separate(product_ion_2,
+      dplyr::mutate(compound_identity = .data$compound_identity) |>
+      tidyr::separate(.data$product_ion_2,
                       into = c("product_ion", "product_mass"),
                       sep = "\\s+\\[",
                       remove = FALSE) |>
       dplyr::mutate(
-        product_mass = gsub("]", "", product_mass),
-        product_mass = trimws(product_mass),
+        product_mass = gsub("]", "", .data$product_mass),
+        product_mass = trimws(.data$product_mass),
         unit = stringr::str_extract(
-          compound_identity_2,
+          .data$compound_identity_2,
           "(?<=\\()(ppb|ppm|ppt|mg/m³|µg/m³|ng/m³)(?=\\))"
         ),
         cas_number = stringr::str_extract(
-          compound_identity_2,
+          .data$compound_identity_2,
           "(?<=\\()\\d{1,7}-\\d{2}-\\d{1,2}(?=\\))"
         ),
-        compound = stringr::str_remove(compound_identity_2, "\\s*\\([^()]*\\)\\s*$") |>
+        compound = stringr::str_remove(.data$compound_identity_2, "\\s*\\([^()]*\\)\\s*$") |>
           stringr::str_remove_all("\\s*\\([^()]*\\)\\s*$") |>
           stringr::str_trim()
       ) |>
-      dplyr::select(start_time, table, table_type, time_s, compound_identity,
-                    reagent_ion, product_ion, product_mass,
-                    compound, cas_number, conc, unit)
+      dplyr::select(.data$start_time, .data$table, .data$table_type, .data$time_s, .data$compound_identity,
+                    .data$reagent_ion, .data$product_ion, .data$product_mass,
+                    .data$compound, .data$cas_number, .data$conc, .data$unit)
   }
-
 
   filtered_df <- filtered_df |>
     dplyr::mutate(unit_class = dplyr::case_when(
-      unit %in% volumetric_units ~ "volumetric",
-      unit %in% mass_units       ~ "mass",
+      .data$unit %in% volumetric_units ~ "volumetric",
+      .data$unit %in% mass_units       ~ "mass",
       TRUE ~ "unknown"
     ))
 
   target_class <- if (conc_unit %in% volumetric_units) "volumetric" else "mass"
 
   removed_conflicts <- filtered_df |>
-    dplyr::filter(unit_class != target_class)
+    dplyr::filter(.data$unit_class != target_class)
 
   cleaned_df <- filtered_df |>
-    dplyr::filter(unit_class == target_class)
+    dplyr::filter(.data$unit_class == target_class)
 
   if (target_class == "volumetric") {
     cleaned_df <- cleaned_df |>
       dplyr::mutate(
         conc = dplyr::case_when(
-          unit == "ppm" & conc_unit == "ppb" ~ conc * 1000,
-          unit == "ppm" & conc_unit == "ppt" ~ conc * 1e6,
-          unit == "ppb" & conc_unit == "ppm" ~ conc / 1000,
-          unit == "ppb" & conc_unit == "ppt" ~ conc * 1000,
-          unit == "ppt" & conc_unit == "ppb" ~ conc / 1000,
-          unit == "ppt" & conc_unit == "ppm" ~ conc / 1e6,
-          TRUE ~ conc
+          .data$unit == "ppm" & conc_unit == "ppb" ~ .data$conc * 1000,
+          .data$unit == "ppm" & conc_unit == "ppt" ~ .data$conc * 1e6,
+          .data$unit == "ppb" & conc_unit == "ppm" ~ .data$conc / 1000,
+          .data$unit == "ppb" & conc_unit == "ppt" ~ .data$conc * 1000,
+          .data$unit == "ppt" & conc_unit == "ppb" ~ .data$conc / 1000,
+          .data$unit == "ppt" & conc_unit == "ppm" ~ .data$conc / 1e6,
+          TRUE ~ .data$conc
         ),
         unit = conc_unit
       )
@@ -193,13 +192,13 @@ filter_proc_sift <- function(df, table_type, remove_incomplete_scans = TRUE, con
     cleaned_df <- cleaned_df |>
       dplyr::mutate(
         conc = dplyr::case_when(
-          unit == "mg/m³" & conc_unit == "µg/m³" ~ conc * 1000,
-          unit == "mg/m³" & conc_unit == "ng/m³" ~ conc * 1e6,
-          unit == "µg/m³" & conc_unit == "mg/m³" ~ conc / 1000,
-          unit == "µg/m³" & conc_unit == "ng/m³" ~ conc * 1000,
-          unit == "ng/m³" & conc_unit == "µg/m³" ~ conc / 1000,
-          unit == "ng/m³" & conc_unit == "mg/m³" ~ conc / 1e6,
-          TRUE ~ conc
+          .data$unit == "mg/m³" & conc_unit == "µg/m³" ~ .data$conc * 1000,
+          .data$unit == "mg/m³" & conc_unit == "ng/m³" ~ .data$conc * 1e6,
+          .data$unit == "µg/m³" & conc_unit == "mg/m³" ~ .data$conc / 1000,
+          .data$unit == "µg/m³" & conc_unit == "ng/m³" ~ .data$conc * 1000,
+          .data$unit == "ng/m³" & conc_unit == "µg/m³" ~ .data$conc / 1000,
+          .data$unit == "ng/m³" & conc_unit == "mg/m³" ~ .data$conc / 1e6,
+          TRUE ~ .data$conc
         ),
         unit = conc_unit
       )
@@ -216,7 +215,7 @@ filter_proc_sift <- function(df, table_type, remove_incomplete_scans = TRUE, con
   }
 
   return(list(
-    data = cleaned_df |> dplyr::select(-unit_class),
+    data = cleaned_df |> dplyr::select(-.data$unit_class),
     removed_conflicts = removed_conflicts
   ))
 }
